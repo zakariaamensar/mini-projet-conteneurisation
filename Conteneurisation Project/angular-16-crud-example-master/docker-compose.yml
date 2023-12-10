@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  MySQL:
+    image: localhost:5000/mysql
+    container_name: MySQL
+    ports:
+      - "3306:3306"
+    networks:
+      - appNetwork
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    hostname: MySQL
+    volumes:
+      - mysqlvol:/var/lib/mysql
+
+  springapi:
+    image: localhost:5000/springapi
+    container_name: springapi
+    ports:
+      - "8080:8080"
+    networks:
+      - appNetwork
+    depends_on:
+      - MySQL
+
+  frontend:
+    image: localhost:5000/frontend
+    container_name: frontend
+    ports:
+      - "8081:80"
+    networks:
+      - appNetwork
+    depends_on:
+      - springapi
+
+volumes:
+  mysqlvol:
+    external: true
+
+networks:
+  appNetwork:
+    driver: bridge

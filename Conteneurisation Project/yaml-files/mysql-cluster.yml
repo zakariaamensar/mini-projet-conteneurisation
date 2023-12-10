@@ -1,0 +1,20 @@
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mycluster
+spec:
+  secretName: mypwds
+  tlsUseSelfSigned: true
+  instances: 3
+  router:
+    instances: 1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mypwds
+type: Opaque
+data:
+  rootUser: cm9vdFVzZXI= # base64-encoded value of "root"
+  rootHost: JSA= # base64-encoded value of "%"
+  rootPassword: c2FraWxh # base64-encoded value of "sakila"
